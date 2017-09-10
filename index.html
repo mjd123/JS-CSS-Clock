@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+
+  <style>
+    html {
+      background: #018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1),
+      inset 0 0 0 3px #EFEFEF,
+      inset 0 0 10px black,
+      0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100% 100%;
+    }
+  </style>
+
+
+
+
+  <script>
+    var hands = document.querySelectorAll(".hand"); // grabs all 3 hands
+
+    setInterval(function() {
+      minHand() // refeshes minHand function every second
+    }, 1000);
+
+    function minHand() {
+      var date = new Date();
+      var hours = date.getHours();
+      var mins = date.getMinutes();
+      var secs = date.getSeconds();
+
+      var seconds = secs * 6 + 90; // 6 is the amount of degrees the hand must travel to reach next number --- +90 to makeup for the hands inital offset
+      var minutes = mins * 6 + 90;
+      var hourNew = hours * 30 + 90; // 30 is degrees hand must travel to reach next number
+
+      hands[2].style.transform = "rotate(" + seconds + "deg)"; //secs// rotates hand by calculated amount
+      hands[1].style.transform = "rotate(" + minutes + "deg)";//mins
+      if (hours < 12) { // var hours is in 24hr format... if the time is past 12 minus 12 to keep hours in 12hr format
+        hands[0].style.transform = "rotate(" + hourNew + "deg)";//hours
+      } else {
+        hours = hours - 12;
+        hands[0].style.transform = "rotate(" + hourNew + "deg)";
+      }
+    }
+    //clock = 360 degrees, 360/60= 6 amount of degrees for each second
+    // 0 secs is 90degrees from start point
+    // add 6 degrees for every second after that
+  </script>
+</body>
+
+</html>
